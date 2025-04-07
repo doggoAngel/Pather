@@ -28,11 +28,16 @@ func main() {
 	//check the endpoint is live
 	checker(url)
 
+	fmt.Printf("> 0%%")
+
 	for i := 0; i < len(c); i++ {
 		var result string = send(url,c[i])
+		percent := int(float64(i+1)/float64(len(c))*100) 
 		if(result != ""){
+			fmt.Print("\r\033[K")
 			fmt.Println(result)
 		}
+		fmt.Printf("\r> %d%%", percent)
 	}
 
 }
@@ -40,7 +45,7 @@ func main() {
 func send(url string, path string) string {
 	resp, _ := http.Get(url + path)
 	if resp.StatusCode == 200 || resp.StatusCode == 403 {
-		return url  + path + " Response: " + strconv.Itoa(resp.StatusCode)
+		return url  + path + " Code: " + strconv.Itoa(resp.StatusCode)
 	}
 	return ""
 }
